@@ -4,7 +4,7 @@
     <head>
         
         <meta charset="UTF-8">
-        <title>深入理解java虚拟机（第二版） | 读书笔记</title>
+        <title>第三章 | 读书笔记</title>
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
         <meta name="description" content="">
         <meta name="generator" content="GitBook 0.6.0">
@@ -19,10 +19,10 @@
     <meta name="author" content="excalibur">
     
     
-    <link rel="next" href="../java-performance/README.html" />
+    <link rel="next" href="../jvm-specification/README.html" />
     
     
-    <link rel="prev" href="../http/README.html" />
+    <link rel="prev" href="../java-performance/README.html" />
     
 
         
@@ -34,7 +34,7 @@
 
 
         
-    <div class="book" data-github="excalibur/notes" data-level="2" data-basepath=".." data-revision="1406456116498">
+    <div class="book" data-github="excalibur/notes" data-level="3.1" data-basepath=".." data-revision="1406456116498">
     <div class="book-header">
     <!-- Actions Left -->
     <a href="#" class="btn pull-left toggle-summary" aria-label="Toggle summary"><i class="fa fa-align-justify"></i></a>
@@ -118,7 +118,7 @@
         
         
         <li>
-            <a href="https://github.com/excalibur/notes/edit/master/jvm/README.md" target="blank" class="contribute-link">Edit and Contribute</a>
+            <a href="https://github.com/excalibur/notes/edit/master/java-performance/3.md" target="blank" class="contribute-link">Edit and Contribute</a>
         </li>
         
 
@@ -161,7 +161,7 @@
         </li>
     
         
-        <li class="chapter active" data-level="2" data-path="jvm/README.html">
+        <li class="chapter " data-level="2" data-path="jvm/README.html">
             
                 
                     <a href="../jvm/README.html">
@@ -194,7 +194,7 @@
                 
     
         
-        <li class="chapter " data-level="3.1" data-path="java-performance/3.html">
+        <li class="chapter active" data-level="3.1" data-path="java-performance/3.html">
             
                 
                     <a href="../java-performance/3.html">
@@ -358,7 +358,7 @@
             <div class="page-wrapper" tabindex="-1">
                 <div class="book-progress">
     <div class="bar">
-        <div class="inner" style="width: 16.666666666666668%;min-width: 8.333333333333334%;"></div>
+        <div class="inner" style="width: 33.333333333333336%;min-width: 25%;"></div>
     </div>
     <div class="chapters">
     
@@ -368,9 +368,9 @@
     
         <a href="../jvm/README.html" title="深入理解java虚拟机（第二版）" class="chapter done new-chapter" data-progress="2" style="left: 16.666666666666668%;"></a>
     
-        <a href="../java-performance/README.html" title="java性能优化指南" class="chapter  new-chapter" data-progress="3" style="left: 25%;"></a>
+        <a href="../java-performance/README.html" title="java性能优化指南" class="chapter done new-chapter" data-progress="3" style="left: 25%;"></a>
     
-        <a href="../java-performance/3.html" title="第三章" class="chapter  " data-progress="3.1" style="left: 33.333333333333336%;"></a>
+        <a href="../java-performance/3.html" title="第三章" class="chapter done " data-progress="3.1" style="left: 33.333333333333336%;"></a>
     
         <a href="../jvm-specification/README.html" title="java虚拟机规范" class="chapter  new-chapter" data-progress="4" style="left: 41.666666666666664%;"></a>
     
@@ -393,15 +393,71 @@
 
                 <div class="page-inner">
                 
-                    <section class="normal" id="section-gitbook_21">
+                    <section class="normal" id="section-gitbook_18">
                     
-                        <h3 id="java">深入理解Java虚拟机（第二版）</h3>
-<p>书名：《深入理解Java虚拟机（第二版）》</p>
-<p>外文名： 无</p>
-<p>作者： 周志明  </p>
-<p>译者： 无</p>
-<p>出版日期：2013-09</p>
-<p>书号（ISBN）：9787111421900</p>
+                        <h3 id="jvm-">JVM 概览</h3>
+<p>HotSpot VM 有3个主要的组件：<strong>VM运行时</strong>(Runtime)、<strong>JIT编译器</strong>(JIT Compiler)以及<strong>内存管理器</strong>(Memory Manager)。</p>
+<h4 id="hotspot-vm-">HotSpot VM 的基本架构</h4>
+<p>JIM编译器（Client或者Server）和垃圾回收器都是可插拨的。</p>
+<p>早起HotSpot VM是32位JVM，内存空间限制为4G，关键是，实际Java堆的大小还进一步受限于底层操作系统。Microsoft Windows上的HotSpot VM最大可用的Java堆大小约为1.5G。Linux上，对于较早的内核来说，HotSpot VM最大约为2G，最新的内核约为2.5G-3G。实际消耗最大内存空间和给定的Java应用和JVM版本等也不同。</p>
+<p>64位的HotSpot对寻址有帮助，但是也带来了性能损失：HotSpot VM内部Java对象表示（称为普通对象指针，Ordinary Object Pointers，或oops）的长度从32位变成了64位，导致CPU高速缓存行（CPU Cache Line）中可用的oops变少，从而降低了CPU缓存的效率。一般效率比32位低8%~15%。</p>
+<p>Java 6提供压缩指针功能（Compressed oops，-XX：+UseCompressedOops开启），使得64位同样可用达到32位指针效果，改善性能。</p>
+<h4 id="hotspot-vm-">HotSpot VM 运行时</h4>
+<p>HotSpot VM运行环境担当许多职责，包括命令行选项解析、VM生命周期管理、类加载、字节码解释、异常处理、同步、线程管理、Java本地接口、VM致命错误处理和C++（非Java）堆管理。</p>
+<h5 id="">命令行选项</h5>
+<p>命令行选项主要有3类:标准选项（Standard Option）、非标准选项（Nonstandard Option）和非稳定选项（Developer Option）。</p>
+<p>非标准选项以-X为前缀，非稳定选项以-XX为前缀，选项明前的+或者-表示开启功能或者使用默认。</p>
+<h4 id="vm">VM生命周期</h4>
+<p>启动HotSpot VM的组件是启动器。HotSpot VM有若干个启动器，Linux下java，Windows下java、javaw。还留言通过JNI接口JNI_CreateJavaVM启动内嵌的JVM。另外还有一个网络启动器javaws，用来启动applet。</p>
+<p>启动器的启动HotSpot VM会执行一系列操作。步骤如下：</p>
+<ol>
+<li>解析命令行选项。</li>
+<li>设置堆大小和JIT编译器。</li>
+<li>设定环境变量如LD_LIBRARY_PATH和CLASSPATH。</li>
+<li>如果命令行有-jar选项，启动器则从指定JAR的manifest中查找Main-Class，否则从命令行读取Main-Class。
+5.使用标准Java本地接口（Java Native Interface，JNI）方法JNI——CreateJavaVM在新创建的线程中创建HotSpot VM。</li>
+<li>一旦创建并初始化好HotSpot VM，就会加载Java Main-Class，启动器也会从Java Main-Class中得到Main方法的参数。</li>
+<li>HotSpot VM通过JNI方法CallStaticVoidMethod调用Java main方法，并将命令行选项创给它。</li>
+</ol>
+<p>HotSpot VM启动JNI_CreateJavaVM方法将执行以下操作：</p>
+<ol>
+<li>确保只有一个线程调用这个方法并且确保只创建一个HotSpot VM实例。</li>
+<li>检查并确保支持当前的JNI版本，初始化垃圾收集日志的输出流。</li>
+<li>初始化OS模块，如随机生成器（Random NumberGenerator）、当前进程id（Current Process id）、高精度计时器（High-Resolution TImer）、内存页尺寸（Memory Page Sizes）、保护页（Guard pages）。</li>
+<li>解析传入JNI——CreateJavaVM的命令行选项，保存以备将来使用。</li>
+<li>初始化标准的Java系统属性，例如java.verison、java.vendor、os.name等。</li>
+<li>初始化支持同步、栈、内存和安全页的模块。</li>
+<li>加载libzip、libhpi、libjava及libthread等库。</li>
+<li>初始化并设置信号处理器（Signal Handler）。</li>
+<li>初始化线程库。</li>
+<li>初始化输出流日志记录器（Logger）。</li>
+<li>如果通道Agent库（hpfof、jdi），则初始化并启动。</li>
+<li>初始化线程状态（Thread Stare）和线程本地存储（Thread Local Storage），她们存储了线程私有数据。</li>
+<li>初始化部分HotSpot VM全局数据，例如事件日志（Event Log），OS同步原语、perfMemory（性能统计数据内存），以及chunkPool（内存非配器）。</li>
+<li>至此，HotSpot VM可以创建线程了。</li>
+<li>初始化并激活Java级别同步。</li>
+<li>初始化启动类加载器（Bootclassloader）、代码缓存、解释器、JIT编译器、JNI、系统词典（System Dictionary）及universe（一种必备的全局数据结构集）。</li>
+<li>现在，添加Java主线程到已知线程列表中。</li>
+<li>加载和初始化Java类，如：java.lang.String、java.lang.System等。</li>
+<li>启动HotSpot VM的信号处理器线程，初始化JIM编译器并启动HotSpot编译器代理线程。</li>
+<li>最后，生成JNIEnv对象返回给调用者，HotSpot则准备响应新的JNI请求。</li>
+</ol>
+<p>DestroyJavaVM过程：</p>
+<ol>
+<li>一直等待，直到只有一个售后线程执行，注意此时HotSpot VM任然可用。</li>
+<li>调用java.lang.Shutdown.shutdown()，它会调用Java上的shutdown钩子方法，如果finalization-on-exit为true，则运行Java对象简单finalier。</li>
+<li>运行HotSpot VM上的shutdown钩子（通过JVM_OnExit()注册），停止以下线程：性能分析器、统计数据抽样器、监控线程及垃圾收集器线程。发出状态事件通知JVMTI，然后关闭JVMTI、停止信号线程。</li>
+<li>调用HotSpot的JavaThread::exit()释放JNI处理快，移除保护页，并将当期线程从已知线程队列中移除。</li>
+<li>停止HotSpot VM线程，将遗留的HotSpot VM线程带到安全点并停止JIT编译器线程。</li>
+<li>停止追踪JNI，HotSpot VM及JVMTI屏蔽。</li>
+<li>为那些任然以本地代码运行的线程设置标记“VM exited”。</li>
+<li>删除当前线程。</li>
+<li>删除或者移除所有的输入/输出流，释放PerfMemory(性能统计内存)资源。</li>
+<li>最后放回到调用者。</li>
+</ol>
+<h4 id="vm">VM类加载</h4>
+<p>类加载3个阶段：加载、连接和初始化。</p>
+<h5 id="">类加载阶段</h5>
 
                     
                     </section>
@@ -411,10 +467,10 @@
         </div>
 
         
-        <a href="../http/README.html" class="navigation navigation-prev " aria-label="Previous page: 图解Http"><i class="fa fa-angle-left"></i></a>
+        <a href="../java-performance/README.html" class="navigation navigation-prev " aria-label="Previous page: java性能优化指南"><i class="fa fa-angle-left"></i></a>
         
         
-        <a href="../java-performance/README.html" class="navigation navigation-next " aria-label="Next page: java性能优化指南"><i class="fa fa-angle-right"></i></a>
+        <a href="../jvm-specification/README.html" class="navigation navigation-next " aria-label="Next page: java虚拟机规范"><i class="fa fa-angle-right"></i></a>
         
     </div>
 </div>
