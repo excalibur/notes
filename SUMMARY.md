@@ -12,3 +12,4 @@
 * [深入理解HTML5：语义、标准与样式](html5-mastery/README.md)
 * [Node.js高级编程](professional-nodejs/README.md)
 * [REST实战](rest-in-practice/README.md)
+* [Nginx开发从入门到精通](nginx/README.md)
